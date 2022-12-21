@@ -1,0 +1,266 @@
+﻿<Window x:Class="ToDoListProject.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ToDoListProject"
+           WindowStartupLocation="CenterScreen"
+        Height="600" Width="1000"
+        MaxHeight="600" MaxWidth="1000"
+        ResizeMode="NoResize" 
+        WindowStyle="None"
+        Title="MainWindow" >
+    
+    
+    
+    <Grid Background="#FF222328">
+             
+        <!--#region Grid Settings-->
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="17*"/>
+            <ColumnDefinition Width="63*"/>
+            <ColumnDefinition Width="200"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="59*"/>
+            <RowDefinition Height="541*"/>
+        </Grid.RowDefinitions>
+
+        <!--#endregion-->
+
+        <!--#region Center Grid -->
+
+        <ListView Name="ListOfTasks" FontSize="22" Grid.Row="1" Grid.Column="1"
+                      Grid.ColumnSpan="2" Width="auto" Background="#FF222328"
+                        Foreground="#FFE8E8E8" BorderBrush="{x:Null}" FontFamily="Bahnschrift Light" BorderThickness="0,0,0,0" 
+                          ItemContainerStyle="{StaticResource LvItemStyle}"
+                            ScrollViewer.CanContentScroll="False"
+                              ScrollViewer.PanningMode="VerticalOnly"
+                                ScrollViewer.PanningRatio="0.5">
+
+            <ListView.ItemTemplate >
+                <DataTemplate >
+                    <WrapPanel>
+                        <Expander x:Name="ExpanderSec" Header="{Binding Name}" Foreground="White" FontSize="30" Width="270"  HorizontalAlignment="Left" AllowDrop="True" >
+                            <TextBlock TextWrapping="Wrap" Text="{Binding Description}" Foreground="#FFCACACA" FontSize="20" />
+                        </Expander>
+                        <!--<TextBlock x:Name="DoneMark" Text="Done" Foreground="Green" Margin="0,8,0,0"  />-->
+                        <TextBlock x:Name="IsDoneMark" Margin="280,8,0,0" Visibility="Visible"  >
+                            <TextBlock.Style>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Setter Property="Text" Value="" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsDone}" Value="True">
+                                            <Setter Property="Text" Value="Done" />
+                                            <Setter Property="Foreground" Value="Green" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+
+                        </TextBlock>
+                        
+                    </WrapPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+
+        </ListView>
+
+        <Button x:Name="Make_Done_Btn"  FontSize="30" Height="40"
+                   Width="40" Grid.Row="1"  Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Bottom"  Background="#FF419656"
+                      Foreground="#FFFFEEEE" BorderBrush="#FFFFF7F7" BorderThickness="2,2,2,2" FontFamily="Cambria Math" Margin="0,0,31,95"
+                         Click="Make_Done_Btn_Click" >
+
+            <Image Source="Assets/VMark.png" Height="20" />
+            <Button.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="27"></Setter>
+                </Style>
+            </Button.Resources>
+
+
+        </Button>
+
+        <Button x:Name="Delete_Task_Btn" FontSize="30" Height="40"
+                   Width="40" Grid.Row="1"  Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Bottom"  Background="#FF8C2F2F"
+                      Foreground="#FFFFEEEE" BorderBrush="#FFFFF7F7" BorderThickness="2,2,2,2" FontFamily="Cambria Math" Margin="0,0,100,26" Click="Delete_Task_Btn_Click"
+                          >
+            <Image Source="Assets/GarbegeIcon.png" Height="22" />
+            <Button.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="27"></Setter>
+                </Style>
+            </Button.Resources>
+        </Button>
+
+
+        <Button x:Name="Open_Create_Canvas_Btn"  FontSize="40" Height="60" Width="60" Grid.Row="1" 
+                    Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,21,16"
+                        Background="#FF166292" Foreground="#FFFFEEEE" BorderBrush="#FFFFF7F7" BorderThickness="2,2,2,2" 
+                            FontFamily="Cambria Math" Click="Open_Create_Canvas_Btn_Click">
+            <Image Source="Assets/AddIcon.png" Height="30" Margin="0,0,-4,-5"  />
+            <Button.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="28"></Setter>
+                </Style>
+            </Button.Resources>
+
+        </Button>
+
+        <!--#endregion-->
+
+        <!--#region Create Task Menu-->
+
+        <Canvas x:Name="Create_Task_Canvas" Height="541" Width="200" Visibility="Collapsed"
+                HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1"  Background="#FF2A2C37" Grid.Column="2">
+
+            <TextBox FontSize="20" x:Name="NameTask" Style="{StaticResource MyWaterMarkStyle}" Height="49" 
+                         MaxLength="17" Tag="Task Name" Width="176" Canvas.Left="14" Canvas.Top="32" HorizontalAlignment="Center" 
+                            VerticalAlignment="Top" BorderBrush="Transparent" Foreground="Black" BorderThickness="0"/>
+
+
+            <TextBox FontSize="20" x:Name="DescriptionTask" Style="{StaticResource MyWaterMarkStyle}"
+                         MaxLength="97" MinHeight="49" MaxHeight="250"  Height="auto" Tag="Description"
+                             Width="176" Canvas.Left="14" Canvas.Top="86" HorizontalAlignment="Center" VerticalAlignment="Top"
+                                 AcceptsReturn="True" TextAlignment="Justify" MinLines="3" VerticalScrollBarVisibility="Auto" MaxLines="3" TextWrapping="Wrap" />
+
+
+            <Button Content="CREATE" x:Name="NameTask_Btn" FontSize="20" Height="46" Width="110" 
+                        Grid.Column="2" Grid.Row="1"  Click="Creat_Task_Btn_Click" Canvas.Left="45" FontFamily="Bahnschrift Light"
+                                Canvas.Top="414" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="White" Background="#FF166292" BorderBrush="White" BorderThickness="2,2,2,2">
+
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="25"></Setter>
+                    </Style>
+                </Button.Resources>
+
+            </Button>
+
+            <Button  Name="Close_Create_Canvas_Btn" FontSize="15" Height="35" 
+                      Width="36" Grid.Column="2" Grid.Row="1" Canvas.Left="82" Canvas.Top="481"
+                          HorizontalAlignment="Center" VerticalAlignment="Top" Background="#FF8C2F2F"
+                                Foreground="White" Click="Close_Create_Canvas_Btn_Click" BorderBrush="White" BorderThickness="2,2,2,2">
+
+                <Image Source="Assets/XIcon.png" Height="15" />
+
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="20"></Setter>
+                    </Style>
+                </Button.Resources>
+            </Button>
+
+        </Canvas>
+
+        <!--#endregion -->
+
+        <!--#region Top Bar-->
+        
+        <Canvas Background="#FF2C2D32" Grid.Column="0" Grid.ColumnSpan="3"  MouseDown="TopBar_Move_Click" >
+            <Canvas.Effect>
+                <DropShadowEffect BlurRadius="10" Opacity="0.5"/>
+            </Canvas.Effect>
+
+            <Button Name="Close_Win_Btn" Content="X" Foreground="White" FontSize="25"
+                         Height="40" Width="40" Canvas.Left="950" Canvas.Top="10"
+                               HorizontalAlignment="Left" VerticalAlignment="Center"  Style="{StaticResource ButtonAnimation}"
+                                  Background="{x:Null}" BorderBrush="{x:Null}" Click="Close_Win_Btn_Click"   />
+
+
+
+            <Button Name="Min_Win_Btn" Content="-" Foreground="White" FontSize="25" 
+                         Height="40" Width="40" Canvas.Left="905" Canvas.Top="10" HorizontalAlignment="Left"
+                             VerticalAlignment="Center" Background="{x:Null}" BorderBrush="{x:Null}" Click="Min_Win_Btn_Click" Style="{StaticResource ButtonAnimation}"  />
+
+
+
+            <Button Name="Expand_SideBar_Btn"  Foreground="White" FontSize="25" Style="{StaticResource ButtonAnimation}"
+                         Height="25" Width="20" Canvas.Left="10" Canvas.Top="17" HorizontalAlignment="Left"
+                            VerticalAlignment="Top" Background="{x:Null}" BorderBrush="{x:Null}" Click="Expand_SideBar_Btn_Click"   >
+
+                <Image Source="Assets/SlideIcon.png" Height="20" />
+            </Button>
+
+            <TextBlock Name="NameListIndector" Text="To Do" FontSize="30" 
+                        FontFamily="Bahnschrift Light" Canvas.Left="463"
+                              Grid.Column="1" Foreground="White" Canvas.Top="11"    />
+     
+        </Canvas>
+
+        <!--#endregion-->
+
+        <!--#region Title Canvas-->
+        
+        <Canvas Name="Title_Canvas" Background="#FF2A2C37" Grid.Row="0" MouseDown="TopBar_Move_Click" Visibility="Visible" >
+            <Canvas.Effect>
+                <DropShadowEffect/>
+            </Canvas.Effect>
+
+            <Button Name="Expand_SideBar_btn"   Width="15" Style="{StaticResource ButtonAnimation}"
+                         Height="25" Canvas.Left="145" Canvas.Top="17" Background="{x:Null}" 
+                             BorderBrush="{x:Null}" Foreground="Gainsboro" HorizontalAlignment="Center" 
+                                VerticalAlignment="Top" Click="Close_SideBar_Btn_Click"  >
+                <Image Source="Assets/SlideIcon.png" RenderTransformOrigin="0.5,0.5" Height="20" >
+                    <Image.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleX="-1"/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Image.RenderTransform>
+                </Image>
+
+            </Button>
+
+            <TextBlock Text="To Do List" FontFamily="Bahnschrift Light" FontSize="20" Foreground="White" Canvas.Left="22" Canvas.Top="17" />
+
+        </Canvas>
+
+        <!--#endregion-->
+
+        <!--#region Side Bar Canvas (Type Lists)-->
+
+        <Canvas Name="SideBar_Canvas" Background="#FF2C2D32" Grid.Row="1"  >
+            <Canvas.Effect>
+                <DropShadowEffect ShadowDepth="3" Opacity="0.8" BlurRadius="15"/>
+            </Canvas.Effect>
+
+
+            <Button Content="    To Do" Name="TodoBtnMenu" FontSize="26" 
+                         Height="45" Width="153" Canvas.Left="7" Canvas.Top="28" Background="{x:Null}"
+                              Foreground="White" BorderBrush="{x:Null}" 
+                                   Click="Todo_Btn_Menu_Click" Style="{StaticResource ButtonAnimation}" FontFamily="Gisha" HorizontalAlignment="Left" VerticalAlignment="Center"   />
+
+
+            <Image Source="Assets/ListIcon.png" Height="37" Canvas.Left="11" Canvas.Top="32" HorizontalAlignment="Center" VerticalAlignment="Top" />
+
+
+            <Button Content="   Done" Name="DoneBtnMenu" FontSize="26" 
+                         Height="45" Width="153" Canvas.Left="7" Canvas.Top="98" FontFamily="Gisha" Style="{StaticResource ButtonAnimation}"
+                               HorizontalAlignment="Center" VerticalAlignment="Top" Background="{x:Null}"
+                                   Foreground="White" BorderBrush="{x:Null}" Click="Done_Btn_Menu_Click" />
+
+            <Image Source="Assets/VMark.png" Height="22" Canvas.Left="18" Canvas.Top="109" HorizontalAlignment="Center" VerticalAlignment="Top"  />
+
+            <Button Content="   Tasks" Name="TasksBtnMenu" FontSize="26"  Height="45" Width="153"
+                    Canvas.Left="7" Canvas.Top="168" Background="{x:Null}" FontFamily="Gisha" Style="{StaticResource ButtonAnimation}"
+                             Foreground="White" BorderBrush="{x:Null}" HorizontalAlignment="Center" 
+                                VerticalAlignment="Top" Click="Tasks_Btn_Menu_Click" />
+            <Image Source="Assets/LibraryIcon.png" Height="29" Canvas.Left="20" Canvas.Top="175" HorizontalAlignment="Left" VerticalAlignment="Top" />
+
+            <Rectangle Width="150" Height="0.5" Canvas.Left="10" Canvas.Top="260" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="#FFAFAFAF" >
+                <Rectangle.Effect>
+                    <BlurEffect Radius="2"/>
+                </Rectangle.Effect>
+            </Rectangle>
+
+        </Canvas>
+        
+        <!--#endregion-->
+
+    </Grid>
+</Window>
