@@ -11,10 +11,6 @@ namespace ToDoListProject.DataAccessFolder
 {
     public class DataAccess
     {
-        //TODO: Interface with generic type instead of TaskModel
-        //TODO: Change MadeTaskDone function
-        //TODO: Create constructor and field for the connection
-        //TODO: Change List to ICollection
 
         #region Methods
 
